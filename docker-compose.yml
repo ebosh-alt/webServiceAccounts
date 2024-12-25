@@ -1,0 +1,12 @@
+services:
+  fastapi:
+    container_name: fastapi
+    image: fastapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./db/database.db:/db/database.db
+    restart: always
