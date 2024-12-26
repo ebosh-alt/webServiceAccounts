@@ -29,15 +29,14 @@ async def create_shop(auth_key: str = Header(..., alias="auth_key"), shop: ShopS
     logger.info(auth_key)
     logger.info(shop)
     if not AuthService.auth(auth_key):
-        return JSONResponse(status_code=400, content={"message": {"status": "Auth key is invalid"}})
+        return {"message": {"status": "error", "detail": "Auth key is invalid"}}
     if await shops.exist(shop.name):
-        return JSONResponse(status_code=400,
-                            content={"message": {"status": "A shop with that name already exists"}})
+        return {"message": {"status": "error", "detail": "A shop with that name already exists"}}
     shop_db = Shop()
     shop_db.name = shop.name
     shop_db.host = shop.host
     shop_db.port = shop.port
     await shops.new(shop_db)
     return JSONResponse(status_code=200,
-                        content={"message": "created new shop"}
+                        content={"message": "success", "detail": "create a new shop"}
                         )

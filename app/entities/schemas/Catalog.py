@@ -4,23 +4,23 @@ from pydantic import BaseModel
 
 
 class Account(BaseModel):
-    category: str
-    name: str
-    description: str
-    price: float
-    uid: str
-    count: int
+    category: Optional[str] = ""
+    name: Optional[str] = ""
+    description: Optional[str] = ""
+    price: Optional[float] = ""
+    uid: Optional[str] = ""
+    count: Optional[int] = 0
 
 
 class Catalog(BaseModel):
-    accounts: List[Optional[Account]]
+    accounts: Optional[List[Account]] = []
 
 
 class Message(BaseModel):
     catalog: List[Account]
     status: str
+    detail: str
 
 
 class Response(BaseModel):
-    status_code: int
     message: Message

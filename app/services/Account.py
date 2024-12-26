@@ -2,7 +2,7 @@ import logging
 
 import aiohttp
 
-from app.entities.schemas.Catalog import Catalog
+from app.entities.schemas.Catalog import Catalog, Response
 
 logger = logging.getLogger(__name__)
 
@@ -12,15 +12,16 @@ class AccountService:
         url = f"{host}:{port}{prefix}"
         result = await self.__get(url)
 
-        if result["message"]["status"] == "success":
-            accounts = result["message"]
+        if result.message.status == "success":
+            accounts = result.message.catalog
             logger.info(accounts)
-            return Catalog(**accounts)
+            return Catalog(**{"accounts": accounts})
         else:
-            return result["message"]
+
+            return result.message
 
     @staticmethod
-    async def __get(url):
+    async def __get(url) -> Response:
         async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
             # Выполняем GET-запрос
             response = await session.get(url=url)
@@ -33,4 +34,4 @@ class AccountService:
             # Читаем данные JSON из ответа
             data = await response.json()
             await session.close()
-        return data
+        return Response(**data)
