@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -9,8 +9,18 @@ class Account(BaseModel):
     description: str
     price: float
     uid: str
-    amount: int
+    count: int
 
 
 class Catalog(BaseModel):
-    accounts: List[Account]
+    accounts: List[Optional[Account]]
+
+
+class Message(BaseModel):
+    catalog: List[Account]
+    status: str
+
+
+class Response(BaseModel):
+    status_code: int
+    message: Message

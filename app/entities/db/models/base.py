@@ -3,13 +3,11 @@ from typing import Any, Sequence
 
 from sqlalchemy import select, update, Row
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import declarative_base
 
 from app.entities.db.init_db import get_factory
 
 logger = logging.getLogger(__name__)
 
-# Base = declarative_base()
 
 
 class BaseDB:
@@ -80,3 +78,16 @@ class BaseDB:
             logger.info(f"Adding {len(instances)} {instances[0].__class__.__name__} to the database")
             await session.commit()
             return True
+
+    async def _exist(self, obj, filters: dict = None) -> bool:
+        async with await self._get_session() as session:
+            sql = select(obj)
+            logger.info(sql)
+
+            if filters is not None:
+                # for key, value in filters.items():
+                for key in filters:
+                    sql = sql.where(key == filters[key])
+                    result = await session.execute(sql)
+            return result.scalars().first() is not None
+

@@ -21,3 +21,6 @@ data/.env
 *.iml
 *.session
 *.db
+server.crt
+server.csr
+server.key

@@ -14,6 +14,7 @@ __factory: sessionmaker | None = None
 logger = logging.getLogger(__name__)
 
 
+
 async def close_database():
     __factory.close_all()
 
@@ -38,3 +39,4 @@ async def create_factory():
 def get_factory():
     global __factory
     return __factory()
+

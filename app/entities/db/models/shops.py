@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class Shop(Base):
-    __tablename__ = "shop"
+    __tablename__ = "shops"
 
     id = Column(Integer, autoincrement="auto", primary_key=True)
     name = Column(String)
@@ -43,3 +43,17 @@ class Shops(BaseDB):
         if type(result) is Shop:
             return result
         return False
+
+    async def get_by_name(self, name: str) -> Shop | None:
+        filters = {
+            Shop.name: name
+        }
+        result = await self._get_objects(obj=Shop, filters=filters)
+        if result:
+            return result[0]
+
+    async def exist(self, name: str) -> bool:
+        filters = {
+            Shop.name: name
+        }
+        return await self._exist(Shop, filters)

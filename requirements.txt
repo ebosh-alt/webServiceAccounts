@@ -8,3 +8,4 @@ SQLAlchemy
 SQLAlchemy-Utils
 pydantic
 pydantic-settings
+aiohttp

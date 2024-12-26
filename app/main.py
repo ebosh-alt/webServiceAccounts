@@ -1,9 +1,11 @@
+import asyncio
 import logging
 
 from fastapi import FastAPI
 
 from app.api import routers
 from app.core.events import lifespan
+from app.entities.db.init_db import create_async_database
 
 logging.basicConfig(
     level=logging.INFO,
@@ -21,11 +23,8 @@ def get_application() -> FastAPI:
     )
     application.include_router(routers)
 
-    # Регистрируем обработчик on_startup
-    # application.add_event_handler("startup", create_start_app_handler)
-    # application.add_event_handler("shutdown", shutdown_app_handler)
-
     return application
 
 
 app = get_application()
+# asyncio.run(create_async_database())

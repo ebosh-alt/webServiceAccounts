@@ -18,12 +18,13 @@ async def create_start_app_handler():
 
 async def shutdown_app_handler():
     logging.info("Закрытие соединений с базой данных...")
-    await close_database()
+    # await close_database()
     logging.info("Соединения успешно закрыты.")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator:
+    await create_async_database()
     logging.info("FastAPI стартует...")
     await create_start_app_handler()
     yield
