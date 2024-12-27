@@ -2,23 +2,23 @@ import logging
 
 import aiohttp
 
-from app.entities.schemas.Catalog import Catalog, Response
+from app.entities.schemas.Catalog import Catalog, Response, Message
 
 logger = logging.getLogger(__name__)
 
 
 class AccountService:
-    async def get_catalog(self, host: str, port: int, prefix: str) -> Catalog | str:
+    async def get_catalog(self, host: str, port: int, prefix: str) -> Message | str:
         url = f"{host}:{port}{prefix}"
         result = await self.__get(url)
-
-        if result.message.status == "success":
-            accounts = result.message.catalog
-            logger.info(accounts)
-            return Catalog(**{"accounts": accounts})
-        else:
-
-            return result.message
+        return result.message
+        # if result.message.status == "success":
+        #     accounts = result.message.catalog
+        #     logger.info(accounts)
+        #     return Catalog(**{"accounts": accounts})
+        # else:
+        #
+        #     return result.message
 
     @staticmethod
     async def __get(url) -> Response:
