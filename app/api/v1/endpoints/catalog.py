@@ -20,8 +20,7 @@ async def get_catalog(auth_key: str = Header(..., alias="auth_key"), name_shop: 
     data = await AccountService().get_catalog(shop.host, shop.port, "/api/catalog/getCatalog")
     catalog = Catalog(**{"accounts": data.catalog})
     if data.status == "error":
-
-        return Response(**{"message": {"catalog": catalog.accounts, "status": "error", "detail": data.message.status}})
+        return Response(**{"message": {"catalog": catalog.accounts, "status": "error", "detail": data.status}})
     else:
         return Response(
             **{"message": {"catalog": catalog.accounts, "status": "success", "detail": "Complete get catalog"}})
